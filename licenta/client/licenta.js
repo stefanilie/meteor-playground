@@ -1,64 +1,64 @@
-Searches = new Mongo.Collection("searches");
-Deps.autorun(function(){
-  if (Meteor.user() && Meteor.user().services){
-     //var token = Meteor.user().services.facebook.accessToken;
+Searches = new Mongo.Collection('searches')
+Deps.autorun(function () {
+  if (Meteor.user() && Meteor.user().services) {
+    // var token = Meteor.user().services.facebook.accessToken
   }
-});
+})
 Meteor.loginWithInstagram(function (err, res) {
-          if (err !== undefined)
-            console.log('sucess ' + res)
-          else
-            console.log('login failed ' + err)
-      });
+  if (err !== undefined)
+    console.log('sucess ' + res)
+  else
+    console.log('login failed ' + err)
+})
 Template.body.helpers({
-  searches: function(){
-    return Searches.find();
+  searches: function () {
+    return Searches.find()
   }
-});
+})
 
 Template.body.events({
-  "submit .searched": function (event){
-    event.preventDefault();
+  'submit .searched': function (event) {
+    event.preventDefault()
 
-    var text = event.target.text.value;
-    var accessToken = "";
-    var userName="";
-    if (Meteor.user().services.facebook){
-      userName = Meteor.user().services.facebook.name;
+    var text = event.target.text.value
+    var accessToken = ''
+    var userName = ''
+    if (Meteor.user().services.facebook) {
+      userName = Meteor.user().services.facebook.name
     } else {
-      userName = Meteor.user().services.instagram.username;
-      accessToken = Meteor.user().services.instagram.accessToken;
+      userName = Meteor.user().services.instagram.username
+      accessToken = Meteor.user().services.instagram.accessToken
     }
 
     Searches.insert({
       text: text,
       user: userName,
       createdAt: new Date()
-    });
+    })
 
     // Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
-    //    console.log(JSON.parse(results.content)['data']);
-    // });
-    Meteor.call("getPosts", text, accessToken, function(err, results) {
-      var response = JSON.parse(results.content)['data'];
-      console.log(response);
-      //var baseUrl = "https://instagr.am/p/"
-      var arrayOfLinks = [];
-      // var arrayOfEmbed = [];
-      for (var i=0; i<response.length; i++){
-        var toAdd = response[i]['link'];
-        var start = toAdd.length-11;
-        toAdd = toAdd.slice(start);
-        toAdd = toAdd.substring(0, toAdd.length-1);
-        arrayOfLinks.push(toAdd);
+    //    console.log(JSON.parse(results.content)['data'])
+    // })
+    Meteor.call('getPosts', text, accessToken, function (err, results) {
+      var response = JSON.parse(results.content)['data']
+      console.log(response)
+      // var baseUrl = "https://instagr.am/p/"
+      var arrayOfLinks = []
+      // var arrayOfEmbed = []
+      for (var i = 0; i < response.length; i++) {
+        var toAdd = response[i]['link']
+        var start = toAdd.length - 11
+        toAdd = toAdd.slice(start)
+        toAdd = toAdd.substring(0, toAdd.length - 1)
+        arrayOfLinks.push(toAdd)
       }
       // TODO: merge in one bit for
-      Meteor.call("getEmbed", arrayOfLinks, function(err, embededPosts){
-        console.log(embededPosts);
-      });
-      console.log(arrayOfLinks);
-    });
+      Meteor.call('getEmbed', arrayOfLinks, function (err, embededPosts) {
+        console.log(embededPosts)
+      })
+      console.log(arrayOfLinks)
+    })
 
-    event.target.text.value = "";
+    event.target.text.value = ''
   }
-});
+})
