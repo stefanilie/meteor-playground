@@ -4,10 +4,16 @@
 
 <body>
   <h1>Welcome to Meteor!</h1>
+  {{> loginButtons}}
 
-  {{> loginButtons}} 
+  <form class="searched" method="post">
+    <input type="text" name="text" placeholder="Search...">
+  </form>
+  <h4>Searched items:</h4>
+  <ul>
+    {{#each searches}}
+      {{> search}}
+    {{/each}}
+  </ul>
+
 </body>
-
-<template name="hello">
-  <button>Facebook Login</button>
-</template>

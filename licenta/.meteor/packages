@@ -10,3 +10,6 @@ insecure
 accounts-ui
 accounts-facebook
 bootstrap
+bozhao:accounts-instagram
+service-configuration
+http
