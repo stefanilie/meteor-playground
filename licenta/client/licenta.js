@@ -41,7 +41,7 @@ Template.body.events({
     // })
     Meteor.call('getPosts', text, accessToken, function (err, results) {
       var response = JSON.parse(results.content)['data']
-      console.log(response)
+      //console.log(response)
       // var baseUrl = "https://instagr.am/p/"
       var arrayOfLinks = []
       // var arrayOfEmbed = []
@@ -53,8 +53,12 @@ Template.body.events({
         arrayOfLinks.push(toAdd)
       }
       // TODO: merge in one bit for
-      Meteor.call('getEmbed', arrayOfLinks, function (err, embededPosts) {
-        console.log(embededPosts)
+      Meteor.call('getEmbed', arrayOfLinks, function (err, result) {
+        //console.log(embededPosts)
+        arrayOfLinks = [];
+        for (var i = 0; i < result.length; i++) {
+          arrayOfLinks.push(result[i]['html']);
+        }
       })
       console.log(arrayOfLinks)
     })
