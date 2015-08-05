@@ -1,7 +1,7 @@
 Searches = new Mongo.Collection('searches')
 Tweets = new Mongo.Collection('tweets')
 Posts = new Mongo.Collection('posts')
-// Meteor.subscribe('tweetSearch')
+//Meteor.subscribe('tweetSearch')
 // Meteor.loginWithInstagram(function (err, res) {
 //   if (err !== undefined)
 //     console.log('sucess ' + res)
@@ -22,7 +22,6 @@ Template.body.helpers({
 
 Template.body.events({
   'submit .searched': function (event) {
-    Searches.
     event.preventDefault()
 
     var text = event.target.text.value
@@ -39,15 +38,12 @@ Template.body.events({
     }
 
     // Tweets.remove({})
-
+    console.log("ciorba");
     Searches.insert({
       text: text,
       user: userName,
       createdAt: new Date()
     })
-    // 1P5P6iQfU5Oo7APMXlht9K6eC:3q3QME7rlcs9Pxk3kX1OUKBddmY21RcSdo9p4yed0cUW9ihcZP
-    // MVA1UDZpUWZVNU9vN0FQTVhsaHQ5SzZlQzozcTNRTUU3cmxjczlQeGsza1gxT1VLQmRkbVkyMVJjU2RvOXA0eWVkMGNVVzlpaGNaUA==
-    // api.twitter.com/oauth2/token
     // TODO: Refactor the following three methods into one beautiful method.
     // Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
     //    console.log(JSON.parse(results.content)['data'])
@@ -62,7 +58,6 @@ Template.body.events({
       // arrayOfLinks.push(arrEmbeded[i]['html'])
       }
     })
-    // console.log(arrayOfLinks)
     // Meteor.call('tweeterSearch', '#' + text, function (err, results) {
     //   if (!err){
     //     console.log(results)

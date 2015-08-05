@@ -41,7 +41,6 @@ Meteor.methods({
         toAdd = toAdd.substring(0, toAdd.length - 1)
         arrayOfLinks.push(toAdd)
       }
-      console.log(arrayOfLinks)
 
       // getting the embeded posts
       console.log('am intrat in getEmbed')
@@ -71,6 +70,7 @@ Meteor.methods({
       content = content['statuses']
       // console.log(content['statuses'])
       // array = array['statuses']
+      console.log("sunt in twitter");
       for (var i = 0; i < content.length; i++) {
         id = content[i]['id_str']
         var rawEmbed = twitter.callAsApp('GET', 'statuses/oembed.json', {id: id})
