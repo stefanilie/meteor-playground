@@ -1,23 +1,28 @@
 Searches = new Mongo.Collection('searches')
-Deps.autorun(function () {
-  if (Meteor.user() && Meteor.user().services) {
-    // var token = Meteor.user().services.facebook.accessToken
-  }
-})
-Meteor.loginWithInstagram(function (err, res) {
-  if (err !== undefined)
-    console.log('sucess ' + res)
-  else
-    console.log('login failed ' + err)
-})
+Tweets = new Mongo.Collection('tweets')
+Posts = new Mongo.Collection('posts')
+// Meteor.subscribe('tweetSearch')
+// Meteor.loginWithInstagram(function (err, res) {
+//   if (err !== undefined)
+//     console.log('sucess ' + res)
+//   else
+//     console.log('login failed ' + err)
+// })
 Template.body.helpers({
   searches: function () {
     return Searches.find()
+  },
+  tweets: function () {
+    return Tweets.find()
+  },
+  posts: function(){
+    return Posts.find()
   }
 })
 
 Template.body.events({
   'submit .searched': function (event) {
+    Searches.
     event.preventDefault()
 
     var text = event.target.text.value
@@ -33,6 +38,8 @@ Template.body.events({
     // accessToken = Meteor.user().services.twitter.
     }
 
+    // Tweets.remove({})
+
     Searches.insert({
       text: text,
       user: userName,
@@ -45,35 +52,22 @@ Template.body.events({
     // Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
     //    console.log(JSON.parse(results.content)['data'])
     // })
-    // Meteor.call('getPosts', text, accessToken, function (err, results) {
-    //   var response = JSON.parse(results.content)['data']
-    //   //console.log(response)
-    //   // var baseUrl = "https://instagr.am/p/"
-    //   var arrayOfLinks = []
-    //   // var arrayOfEmbed = []
-    //   for (var i = 0; i < response.length; i++) {
-    //     var toAdd = response[i]['link']
-    //     var start = toAdd.length - 11
-    //     toAdd = toAdd.slice(start)
-    //     toAdd = toAdd.substring(0, toAdd.length - 1)
-    //     arrayOfLinks.push(toAdd)
-    //   }
-    //   // TODO: merge in one bit for
-    //   Meteor.call('getEmbed', arrayOfLinks, function (err, result) {
-    //     //console.log(embededPosts)
-    //     arrayOfLinks = []
-    //     for (var i = 0; i < result.length; i++) {
-    //       arrayOfLinks.push(result[i]['html'])
-    //     }
-    //   })
-    //   console.log(arrayOfLinks)
-    // })
-
-    Meteor.call('tweeterSearch', '#' + text, function (err, result) {
-      if (!err){
-        console.log(result);
+    Meteor.call('getPosts', text, accessToken, function (err, result) {
+      console.log(result)
+      for (var i = 0; i < result.length; i++) {
+        Posts.insert({
+          query: text,
+          html: result[i]
+        })
+      // arrayOfLinks.push(arrEmbeded[i]['html'])
       }
     })
+    // console.log(arrayOfLinks)
+    // Meteor.call('tweeterSearch', '#' + text, function (err, results) {
+    //   if (!err){
+    //     console.log(results)
+    //   }
+    // })
 
     event.target.text.value = ''
   }
