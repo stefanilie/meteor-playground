@@ -1,12 +1,12 @@
 Searches = new Mongo.Collection('searches')
 // Tweets = new Mongo.Collection('tweets')\
-Posts = new Mongo.Collection('posts')
+// Posts = new Mongo.Collection('posts')
 var twitter = new TwitterApi()
 Meteor.methods({
   'getRelatedTags': function(text, accessToken) {
     check(text, String)
     check(accessToken, String)
-
+    console.log("Getting related hashtags for "+text);
     try {
       var result = HTTP.call('GET', 'https://api.instagram.com/v1/tags/search', {
           params: {
@@ -14,9 +14,9 @@ Meteor.methods({
             access_token: accessToken
           }
         })
-        // console.log(result)
-      return result
+      return JSON.parse(result.content)['data']
     } catch (e) {
+      console.log(e);
       return null
     }
   },
