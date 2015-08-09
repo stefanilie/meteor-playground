@@ -6,7 +6,6 @@
 
 meteor-platform
 insecure
-accounts-ui
 accounts-facebook
 bootstrap
 bozhao:accounts-instagram
@@ -14,6 +13,8 @@ service-configuration
 http
 accounts-twitter
 twitter
-twitter-api
 jquery
 autopublish
+accounts-ui-unstyled
+less
+twitter-api

@@ -42,11 +42,11 @@ Template.body.events({
       // }
       //
       // // Tweets.remove({})
-      // Searches.insert({
-      //   text: text,
-      //   user: userName,
-      //   createdAt: new Date()
-      // })
+      Searches.insert({
+        text: text,
+        user: userName,
+        createdAt: new Date()
+      })
       // TODO: Refactor the following three methods into one beautiful method.
       // Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
       //    console.log(JSON.parse(results.content)['data'])

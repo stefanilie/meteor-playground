@@ -2,7 +2,6 @@ Searches = new Mongo.Collection('searches')
 // Tweets = new Mongo.Collection('tweets')\
 Posts = new Mongo.Collection('posts')
 var twitter = new TwitterApi()
-  // 42217566.5925b3e.43cbb5c3dd1f441eb2fa1e8d7eaa8217
 Meteor.methods({
   'getRelatedTags': function(text, accessToken) {
     check(text, String)

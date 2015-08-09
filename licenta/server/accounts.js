@@ -7,3 +7,12 @@ ServiceConfiguration.configurations.insert({
   scope: 'basic',
   secret: "59d440d36200477f80a1660aadfe8608"
 });
+ServiceConfiguration.configurations.remove({
+  service: "twitter"
+});
+ServiceConfiguration.configurations.insert({
+  service: "twitter",
+  consumerKey: "1P5P6iQfU5Oo7APMXlht9K6eC",
+  secret: "3q3QME7rlcs9Pxk3kX1OUKBddmY21RcSdo9p4yed0cUW9ihcZP",
+  loginStyle: "popup"
+})
