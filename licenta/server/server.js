@@ -26,11 +26,11 @@ Meteor.methods({
     check(accessToken, String)
 
     try {
-      console.log("entering getPosts...");
+      console.log("Getting instagram posts:");
       var url = 'https://api.instagram.com/v1/tags/' + text + '/media/recent?access_token=+' + accessToken
       var result = HTTP.call('GET', url)
-      console.log("searched for "+text+".\n.\n.\n.\n.\n.\n.\n.\n");
-      console.log(result);
+      console.log("* searched for "+text);
+      //console.log(result);
       // parsing the result so that we can call for the htmls
       var response = JSON.parse(result.content)['data']
 
@@ -43,7 +43,7 @@ Meteor.methods({
         toAdd = toAdd.slice(start)
         toAdd = toAdd.substring(0, toAdd.length - 1)
         arrayOfLinks.push(toAdd)
-        console.log("added link: "+toAdd);
+        console.log("*added link: "+toAdd);
       }
 
       // getting the embeded posts
@@ -54,7 +54,7 @@ Meteor.methods({
       for (var i = 0; i < arrayOfLinks.length; i++) {
         // console.log(url + defaultLink + arrayOfLinks[i])
         var answer = HTTP.call('GET', url + defaultLink + arrayOfLinks[i])
-        console.log("got instagram embed codes...");
+        console.log("* got instagram embed code");
         answer = JSON.parse(answer['content'])['html']
         result.push(answer)
       }
@@ -70,12 +70,12 @@ Meteor.methods({
   //alreadyexists not to be shown
   'tweeterSearch': function(term) {
     try {
-      console.log("entering tweeterSearch...");
+      console.log("Getting twitter posts");
       var connections = {}
       var results = []
       var id
       var array = twitter.search(term)
-      console.log("searched for "+term);
+      console.log("* searched for "+term);
       var content = JSON.parse(array['content'])
       content = content['statuses']
 
@@ -84,7 +84,7 @@ Meteor.methods({
         var rawEmbed = twitter.callAsApp('GET', 'statuses/oembed.json', {
           id: id
         })
-        console.log("got embed codes...");
+        console.log("* got tweet embed code...");
         rawEmbed = JSON.parse(rawEmbed['content'])
           // Tweets.insert({
           //   searched: term,

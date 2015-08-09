@@ -53,6 +53,9 @@ Template.body.events({
       // })
     Meteor.call('getPosts', text, accessToken, function(err, result) {
       console.log(result)
+      if(Posts.findOne({})){
+        Posts.remove({})
+      }
       for (var i = 0; i < result.length; i++) {
         Posts.insert({
             query: text,
@@ -64,6 +67,9 @@ Template.body.events({
     Meteor.call('tweeterSearch', text, function(err, results) {
       if (!err) {
         // console.log(results)
+        if(Tweets.findOne({})){
+          Tweets.remove({})
+        }
         for (var i = 0; i < results.length; i++) {
           console.log(results[i])
           Tweets.insert({
