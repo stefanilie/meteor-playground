@@ -6,7 +6,6 @@
 
 meteor-platform
 insecure
-accounts-facebook
 bootstrap
 bozhao:accounts-instagram
 service-configuration
