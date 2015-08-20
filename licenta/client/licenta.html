@@ -1,6 +1,7 @@
 <head>
   <title>Licenta lui Ilie</title>
   <script src="//platform.instagram.com/en_US/embeds.js"></script>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script>
     window.twttr = (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0],
@@ -22,36 +23,49 @@
 </head>
 
 <body>
-  <h1>Welcome to Meteor!</h1>
+  <nav class="navbar navbar-inverse">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#">
+        Licenta lui Ilie
+      </a>
+      </div>
+    </div>
+  </nav>
   {{> loginButtons}}
+  <div class="container">
+    <div class="input-group">
+      <form class="searched" method="post">
+        <input type="text" name="text" placeholder="Search...">
+      </form>
+    </div>
 
-  <form class="searched" method="post">
-    <input type="text" name="text" placeholder="Search...">
-  </form>
-  <br>
-  <div class="main">
-    <span>
-      <h4>Related: </h4>
-      <ul>
+    <div class="main">
+      <div class="well">
         {{#each relateds}} {{> related}} {{/each}}
-      </ul>
-    </span>
-    <span>
-      <h4>Tweets!!!</h4>
-      <ul>
-        {{#each tweets}} {{> tweet}} {{/each}}
-      </ul>
-    </span>
-    <span class="posts">
-      <h4>Posts!!!</h4>
-      <ul>
-        {{#each posts}} {{> post}} {{/each}}
-      </ul>
+      </div>
+      <div class="row">
+        <div class="col-md-5">
+          <h5>Tweets</h5>
+          <p>
+            {{#each tweets}} {{> tweet}} {{/each}}
+          </p>
+        </div>
 
-      <h4>Searched items:</h4>
-      <ul>
-        {{#each searches}} {{> search}} {{/each}}
-      </ul>
-    </span>
+        <div class="col-md-5">
+          <h5>Posts</h5>
+          <p>
+            {{#each posts}} {{> post}} {{/each}}
+          </p>
+        </div>
+
+        <div class="col-md-2">
+          <h5>Searched</h5>
+          <p>
+            {{#each searches}} {{> search}} {{/each}}
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </body>
