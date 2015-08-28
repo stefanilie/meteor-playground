@@ -1,7 +1,6 @@
 <head>
   <title>Licenta lui Ilie</title>
   <script src="//platform.instagram.com/en_US/embeds.js"></script>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script>
     window.twttr = (function(d, s, id) {
       var js, fjs = d.getElementsByTagName(s)[0],
@@ -20,26 +19,43 @@
       return t;
     }(document, "script", "twitter-wjs"));
   </script>
+
+
 </head>
 
 <body>
-  <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#">
-        Licenta lui Ilie
-      </a>
+
+  <div class="navbar navbar-default">
+    <div class="navbar-inner">
+      <div class="container">
+
+        <div class="nav pull-right">
+          {{> user_info}}
+        </div>
+
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">
+          Licenta lui Ilie
+        </a>
+        </div>
+
       </div>
     </div>
-  </nav>
-  {{> loginButtons}}
+  </div>
+
+
   <div class="container">
+
     <div class="input-group">
       <form class="searched" method="post">
         <input type="text" name="text" placeholder="Search...">
       </form>
     </div>
 
+    <div class="progress" style="display: none;" id="status-bar">
+      <div class="progress-bar" id="progress-bar-inner" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+      </div>
+    </div>
     <div class="main">
       <div class="well">
         {{#each relateds}} {{> related}} {{/each}}
@@ -68,4 +84,24 @@
       </div>
     </div>
   </div>
+  <!-- style="display: block; margin-left: 30%; height: 25%; width: 42%;    style="margin-top: 1%"-->
+  <div class="modal fade" id="myModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Notification</h4>
+        </div>
+        <div class="modal-body">
+          <p>Sorry, but you are unable to use our awesome features until you login with your instagram account. </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-info" id="login-instagram" data-dismiss="modal">Login</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
 </body>

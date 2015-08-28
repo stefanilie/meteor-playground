@@ -14,13 +14,14 @@ callStuff = function(text) {
   if (Tweets.findOne({})) {
     Tweets.remove({})
   }
-  if (Meteor.user().services.instagram) {
-    userName = Meteor.user().services.instagram.username
-    accessToken = Meteor.user().services.instagram.accessToken
-  } else {
-    alert("Please login with instagram!")
+  try {
+    if (Meteor.user().services.instagram) {
+      userName = Meteor.user().services.instagram.username
+      accessToken = Meteor.user().services.instagram.accessToken
+    }
+  } catch (e) {
+    $("#myModal").modal('toggle');
   }
-
   if (Searches.findOne({
       text: text
     })) {
@@ -40,7 +41,7 @@ callStuff = function(text) {
     Searches.insert({
       text: text,
       user: userName,
-      count: 0
+      count: 1
     })
   }
   if (Relateds.findOne({})) {
@@ -48,6 +49,7 @@ callStuff = function(text) {
   }
   // TODO: Refactor the following three methods into one beautiful method.
   Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
+    //var ciorba = document.getElementById("ciorba-fff");
     console.log(results)
     for (var i = 0; i < results.length; i++) {
       Relateds.insert({
@@ -69,6 +71,7 @@ callStuff = function(text) {
 
   Meteor.call('tweeterSearch', text, function(err, results) {
     if (!err) {
+
       // console.log(results)
       for (var i = 0; i < results.length; i++) {
         console.log(results[i])
@@ -84,7 +87,8 @@ callStuff = function(text) {
 }
 
 Template.search.events({
-  'click .label': function() {
+  'click #live-search': function() {
+    console.log("ciorbaaaaaaa");
     callStuff(this.text);
   }
 })
@@ -132,5 +136,30 @@ Template.body.events({
       }
     })
     event.target.text.value = ''
+  }
+})
+
+Template.user_loggedout.events({
+  "click #login": function(e, tmpl) {
+    Meteor.loginWithInstagram(function(err, res) {
+      if (err !== undefined)
+        console.log("ciorba este servita: " + res)
+      else {
+        console.log("ciorba este sleita: " + err);
+      }
+    })
+  }
+})
+
+Template.user_loggedin.events({
+  "click #logout": function(e, tmpl){
+    Meteor.logout(function(err){
+      if(err){
+        console.log("Ciorba este sleita: "+ err);
+      }
+      else {
+        console.log("Ciorba este servita: ");
+      }
+    })
   }
 })

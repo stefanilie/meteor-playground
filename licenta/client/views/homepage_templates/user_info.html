@@ -1,0 +1,5 @@
+<template name="user_info">
+  <ul class="nav pull-right">
+    {{#if currentUser}} {{> user_loggedin}} {{else}} {{> user_loggedout}} {{/if}}
+  </ul>
+</template>

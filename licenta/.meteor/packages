@@ -6,14 +6,13 @@
 
 meteor-platform
 insecure
-bootstrap
 bozhao:accounts-instagram
 service-configuration
 http
 accounts-twitter
 twitter
-jquery
 autopublish
 accounts-ui-unstyled
 less
 twitter-api
+twbs:bootstrap

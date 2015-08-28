@@ -1,0 +1,24 @@
+<template name="user_loggedin">
+  {{#if loggingIn}}
+  <li><a>Logging in...</a></li>
+  {{else}}
+  <li>
+    <img class="img-rounded" style="height: 32px; margin-top: 4px;" src="{{currentUser.services.instagram.profile_picture}}" />
+  </li>
+  <li class="dropdown">
+    <a id="drop1" href="#" class="dropdown-toggle" data-toggle="dropdown">
+      {{currentUser.services.instagram.username}}
+      <b class="caret"></b>
+    </a>
+    <ul class="dropdown-menu">
+      <li><a>Account Settings</a></li>
+      <li class="divider"></li>
+      <li><a id="logout">Logout</a></li>
+    </ul>
+  </li>
+  {{/if}}
+</template>
+
+<template name="user_loggedout">
+  <li><a id="login">Login with instagram</a></li>
+</template>
