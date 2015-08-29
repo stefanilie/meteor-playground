@@ -8,83 +8,107 @@ Posts = new Mongo.Collection(null)
 Relateds = new Mongo.Collection(null)
 
 callStuff = function(text) {
-  document.getElementById('content-results').style.display="";
-  if (Posts.findOne({})) {
-    Posts.remove({})
-  }
-  if (Tweets.findOne({})) {
-    Tweets.remove({})
-  }
-  try {
-    if (Meteor.user().services.instagram) {
-      userName = Meteor.user().services.instagram.username
-      accessToken = Meteor.user().services.instagram.accessToken
-    }
-  } catch (e) {
-    $("#myModal").modal('toggle');
-  }
-  if (Searches.findOne({
-      text: text
-    })) {
-    var object = Searches.findOne({
-      text: text
-    })
-    var count = object['count'] + 1
-    console.log(object)
-    Searches.update({
-      _id: object['_id']
-    }, {
-      text: text,
-      user: userName,
-      count: count
-    })
-  } else {
-    Searches.insert({
-      text: text,
-      user: userName,
-      count: 1
-    })
-  }
-  if (Relateds.findOne({})) {
-    Relateds.remove({})
-  }
-  // TODO: Refactor the following three methods into one beautiful method.
-  Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
-    //var ciorba = document.getElementById("ciorba-fff");
-    console.log(results)
-    for (var i = 0; i < results.length; i++) {
-      Relateds.insert({
-        hashtag: "#" + results[i]['name']
-      });
-    }
-  })
+  if (text != "") {
+    document.getElementsByClassName("sk-folding-cube")[0].style.display="";
+    document.getElementsByClassName("sk-folding-cube")[1].style.display="";
 
-  Meteor.call('getPosts', text, accessToken, function(err, result) {
-    console.log(result)
-    for (var i = 0; i < result.length; i++) {
-      Posts.insert({
-          query: text,
-          html: result[i]
-        })
-        // arrayOfLinks.push(arrEmbeded[i]['html'])
+    document.getElementsByClassName("row")[0].style.webkitTransform = "translate(0, -25em)";
+    document.getElementsByClassName("main")[0].style.webkitTransform = "translate(0, -25em)";
+    document.getElementById("related-well").style.display = "";
+    document.getElementById('content-results').style.display = "";
+    if (Posts.findOne({})) {
+      Posts.remove({})
     }
-  })
-
-  Meteor.call('tweeterSearch', text, function(err, results) {
-    if (!err) {
-
-      // console.log(results)
-      for (var i = 0; i < results.length; i++) {
-        console.log(results[i])
-        Tweets.insert({
-          html: results[i]
-        })
+    if (Tweets.findOne({})) {
+      Tweets.remove({})
+    }
+    try {
+      if (Meteor.user().services.instagram) {
+        userName = Meteor.user().services.instagram.username
+        accessToken = Meteor.user().services.instagram.accessToken
       }
+    } catch (e) {
+      $("#myModal").modal('toggle');
     }
-  })
+    if (Searches.findOne({
+        text: text
+      })) {
+      var object = Searches.findOne({
+        text: text
+      })
+      var count = object['count'] + 1
+      console.log(object)
+      Searches.update({
+        _id: object['_id']
+      }, {
+        text: text,
+        user: userName,
+        count: count
+      })
+    } else {
+      Searches.insert({
+        text: text,
+        user: userName,
+        count: 1
+      })
+    }
+    if (Relateds.findOne({})) {
+      Relateds.remove({})
+    }
+    // TODO: Refactor the following three methods into one beautiful method.
+    Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
+      //var ciorba = document.getElementById("ciorba-fff");
+      console.log(results)
+      for (var i = 0; i < results.length; i++) {
+        Relateds.insert({
+          hashtag: "#" + results[i]['name']
+        });
+      }
+    })
 
-  event.target.text.value = ''
-  return accessToken;
+    Meteor.call('getPosts', text, accessToken, function(err, result) {
+      console.log(result)
+      if (result.length > 0) {
+        for (var i = 0; i < result.length; i++) {
+          Posts.insert({
+              query: text,
+              html: result[i]
+            })
+            // arrayOfLinks.push(arrEmbeded[i]['html'])
+        }
+        document.getElementsByClassName("sk-folding-cube")[1].style.display="none";
+      } else {
+        document.getElementById("posts-results").innerHTML = "Sorry, but no instagram posts found containing " + text
+        document.getElementsByClassName("sk-folding-cube")[1].style.display="none";
+
+      }
+    })
+
+    Meteor.call('tweeterSearch', text, function(err, results) {
+      if (!err) {
+        if (results.length > 0) {
+          // console.log(results)
+          for (var i = 0; i < results.length; i++) {
+            console.log(results[i])
+            Tweets.insert({
+              html: results[i]
+            })
+          }
+          document.getElementsByClassName("sk-folding-cube")[0].style.display="none";
+        } else {
+          document.getElementById("tweets-results").innerHTML = "Sorry, but no tweets found containing " + text;
+          document.getElementsByClassName("sk-folding-cube")[0].style.display="none";
+          
+        }
+      }
+    })
+
+    event.target.text.value = ''
+
+    return accessToken;
+  } else {
+    $("#modalTerm").modal('toggle');
+  }
 }
 
 Template.search.events({
@@ -121,7 +145,6 @@ Template.body.helpers({
 
 Template.body.events({
   'submit .searched': function(event) {
-    document.getElementById("related-well").style.display= "";
     event.preventDefault()
     var text = event.target.text.value;
 
@@ -140,7 +163,7 @@ Template.body.events({
     })
     event.target.text.value = ''
   },
-  'click #login-instagram': function(event){
+  'click #login-instagram': function(event) {
     Meteor.loginWithInstagram(function(err, res) {
       if (err !== undefined)
         console.log("ciorba este servita: " + res)
@@ -164,12 +187,11 @@ Template.user_loggedout.events({
 })
 
 Template.user_loggedin.events({
-  "click #logout": function(e, tmpl){
-    Meteor.logout(function(err){
-      if(err){
-        console.log("Ciorba este sleita: "+ err);
-      }
-      else {
+  "click #logout": function(e, tmpl) {
+    Meteor.logout(function(err) {
+      if (err) {
+        console.log("Ciorba este sleita: " + err);
+      } else {
         console.log("Ciorba este servita: ");
       }
     })

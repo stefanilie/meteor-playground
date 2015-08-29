@@ -46,7 +46,7 @@
 
   <div class="container">
     <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-12">
         <div class="input-group">
           <form class="searched" method="post">
             <input type="text" class="form-control" name="text" placeholder="Search for...">
@@ -68,14 +68,26 @@
       <div class="row" id="content-results" style="display: none">
         <div class="col-md-5">
           <h5>Tweets</h5>
-          <p>
+          <div class="sk-folding-cube" style="display: none;">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+          </div>
+          <p id="tweets-results">
             {{#each tweets}} {{> tweet}} {{/each}}
           </p>
         </div>
 
         <div class="col-md-5">
           <h5>Posts</h5>
-          <p>
+          <div class="sk-folding-cube" style="display: none;">
+            <div class="sk-cube1 sk-cube"></div>
+            <div class="sk-cube2 sk-cube"></div>
+            <div class="sk-cube4 sk-cube"></div>
+            <div class="sk-cube3 sk-cube"></div>
+          </div>
+          <p id="posts-results">
             {{#each posts}} {{> post}} {{/each}}
           </p>
         </div>
@@ -86,6 +98,7 @@
             {{#each searches}} {{> search}} {{/each}}
           </p>
         </div>
+
       </div>
     </div>
   </div>
@@ -98,6 +111,26 @@
         </div>
         <div class="modal-body">
           <p>Sorry, but you are unable to use our awesome features until you login with your instagram account. </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-info" id="login-instagram" data-dismiss="modal">Login</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+
+  <div class="modal fade" id="modalTerm">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Notification</h4>
+        </div>
+        <div class="modal-body">
+          <p>Sorry, but you have to enter a term to search for...</p>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
