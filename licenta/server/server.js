@@ -24,9 +24,6 @@ Meteor.methods({
   'getPosts': function(text, accessToken) {
     check(text, String)
     check(accessToken, String)
-    var progressBar = document.getElementById("progress-bar-inner");
-    console.log(progressBar.aria-valuenow);
-
     try {
       console.log("Getting instagram posts:");
       var url = 'https://api.instagram.com/v1/tags/' + text + '/media/recent?access_token=+' + accessToken

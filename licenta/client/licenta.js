@@ -8,6 +8,7 @@ Posts = new Mongo.Collection(null)
 Relateds = new Mongo.Collection(null)
 
 callStuff = function(text) {
+  document.getElementById('content-results').style.display="";
   if (Posts.findOne({})) {
     Posts.remove({})
   }
@@ -120,8 +121,10 @@ Template.body.helpers({
 
 Template.body.events({
   'submit .searched': function(event) {
+    document.getElementById("related-well").style.display= "";
     event.preventDefault()
-    var text = event.target.text.value
+    var text = event.target.text.value;
+
     var accessToken = callStuff(text);
     // TODO: Refactor the following three methods into one beautiful method.
     Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
@@ -136,6 +139,15 @@ Template.body.events({
       }
     })
     event.target.text.value = ''
+  },
+  'click #login-instagram': function(event){
+    Meteor.loginWithInstagram(function(err, res) {
+      if (err !== undefined)
+        console.log("ciorba este servita: " + res)
+      else {
+        console.log("ciorba este sleita: " + err);
+      }
+    })
   }
 })
 
