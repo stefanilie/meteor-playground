@@ -1,5 +1,4 @@
-// TODO: -after login show all content
-//       -add posibility to search by certain params.
+// TODO: -add posibility to search by certain params.
 Searches = new Mongo.Collection('searches')
   // Tweets = new Mongo.Collection('tweets')
 Tweets = new Mongo.Collection(null)
@@ -9,8 +8,17 @@ Relateds = new Mongo.Collection(null)
 
 callStuff = function(text) {
   if (text != "") {
-    document.getElementsByClassName("sk-folding-cube")[0].style.display="";
-    document.getElementsByClassName("sk-folding-cube")[1].style.display="";
+    try {
+      if (Meteor.user().services.instagram) {
+        userName = Meteor.user().services.instagram.username
+        accessToken = Meteor.user().services.instagram.accessToken
+      }
+    } catch (e) {
+      $("#myModal").modal('toggle');
+      return;
+    }
+    document.getElementsByClassName("sk-folding-cube")[0].style.display = "";
+    document.getElementsByClassName("sk-folding-cube")[1].style.display = "";
 
     document.getElementsByClassName("row")[0].style.webkitTransform = "translate(0, -25em)";
     document.getElementsByClassName("main")[0].style.webkitTransform = "translate(0, -25em)";
@@ -21,14 +29,6 @@ callStuff = function(text) {
     }
     if (Tweets.findOne({})) {
       Tweets.remove({})
-    }
-    try {
-      if (Meteor.user().services.instagram) {
-        userName = Meteor.user().services.instagram.username
-        accessToken = Meteor.user().services.instagram.accessToken
-      }
-    } catch (e) {
-      $("#myModal").modal('toggle');
     }
     if (Searches.findOne({
         text: text
@@ -76,10 +76,10 @@ callStuff = function(text) {
             })
             // arrayOfLinks.push(arrEmbeded[i]['html'])
         }
-        document.getElementsByClassName("sk-folding-cube")[1].style.display="none";
+        document.getElementsByClassName("sk-folding-cube")[1].style.display = "none";
       } else {
         document.getElementById("posts-results").innerHTML = "Sorry, but no instagram posts found containing " + text
-        document.getElementsByClassName("sk-folding-cube")[1].style.display="none";
+        document.getElementsByClassName("sk-folding-cube")[1].style.display = "none";
 
       }
     })
@@ -94,11 +94,11 @@ callStuff = function(text) {
               html: results[i]
             })
           }
-          document.getElementsByClassName("sk-folding-cube")[0].style.display="none";
+          document.getElementsByClassName("sk-folding-cube")[0].style.display = "none";
         } else {
           document.getElementById("tweets-results").innerHTML = "Sorry, but no tweets found containing " + text;
-          document.getElementsByClassName("sk-folding-cube")[0].style.display="none";
-          
+          document.getElementsByClassName("sk-folding-cube")[0].style.display = "none";
+
         }
       }
     })
@@ -150,18 +150,20 @@ Template.body.events({
 
     var accessToken = callStuff(text);
     // TODO: Refactor the following three methods into one beautiful method.
-    Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
-      console.log(results)
-      if (Relateds.findOne({})) {
-        Relateds.remove({})
-      }
-      for (var i = 0; i < results.length; i++) {
-        Relateds.insert({
-          hashtag: "#" + results[i]['name']
-        });
-      }
-    })
-    event.target.text.value = ''
+    if (accessToken != null) {
+      Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
+        console.log(results)
+        if (Relateds.findOne({})) {
+          Relateds.remove({})
+        }
+        for (var i = 0; i < results.length; i++) {
+          Relateds.insert({
+            hashtag: "#" + results[i]['name']
+          });
+        }
+      })
+      event.target.text.value = ''
+    }
   },
   'click #login-instagram': function(event) {
     Meteor.loginWithInstagram(function(err, res) {
@@ -193,6 +195,13 @@ Template.user_loggedin.events({
         console.log("Ciorba este sleita: " + err);
       } else {
         console.log("Ciorba este servita: ");
+        document.getElementsByClassName("sk-folding-cube")[0].style.display = "none";
+        document.getElementsByClassName("sk-folding-cube")[1].style.display = "none";
+
+        document.getElementsByClassName("row")[0].style.webkitTransform = "translate(0, 0em)";
+        document.getElementsByClassName("main")[0].style.display = "none";
+        document.getElementById("related-well").style.display = "none";
+        document.getElementById('content-results').style.display = "none";
       }
     })
   }
