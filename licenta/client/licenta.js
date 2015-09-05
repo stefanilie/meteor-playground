@@ -58,11 +58,15 @@ callStuff = function(text) {
     // TODO: Refactor the following three methods into one beautiful method.
     Meteor.call("getRelatedTags", text, accessToken, function(err, results) {
       //var ciorba = document.getElementById("ciorba-fff");
-      console.log(results)
-      for (var i = 0; i < results.length; i++) {
-        Relateds.insert({
-          hashtag: "#" + results[i]['name']
-        });
+      try {
+        console.log(results)
+        for (var i = 0; i < results.length; i++) {
+          Relateds.insert({
+            hashtag: "#" + results[i]['name']
+          });
+        }
+      } catch (e) {
+        
       }
     })
 

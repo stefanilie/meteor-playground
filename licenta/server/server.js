@@ -17,7 +17,7 @@ Meteor.methods({
       return JSON.parse(result.content)['data']
     } catch (e) {
       console.log(e);
-      return null
+      return "error"
     }
   },
 
@@ -26,15 +26,18 @@ Meteor.methods({
     check(accessToken, String)
     try {
       console.log("Getting instagram posts:");
-      var url = 'https://api.instagram.com/v1/tags/' + text + '/media/recent?access_token=+' + accessToken
+      var url = 'https://api.instagram.com/v1/tags/' + text +
+       '/media/recent?access_token=+' + accessToken
+
       var result = HTTP.call('GET', url)
       console.log("* searched for "+text);
-      //console.log(result);
+
       // parsing the result so that we can call for the htmls
       var response = JSON.parse(result.content)['data']
 
       // getting the ids of the posts
       var arrayOfLinks = []
+
         // var arrayOfEmbed = []
       for (var i = 0; i < response.length; i++) {
         var toAdd = response[i]['link']
@@ -69,7 +72,6 @@ Meteor.methods({
     }
   },
 
-  // TODO: refactor search so that it calls it as an app
   // TODO: make validation for tweets if it
   //alreadyexists not to be shown
   'tweeterSearch': function(term) {
