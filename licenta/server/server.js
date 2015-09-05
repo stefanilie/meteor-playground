@@ -50,14 +50,19 @@ Meteor.methods({
       var defaultLink = 'http://instagr.am/p/'
       var result = []
       var url = 'http://api.instagram.com/oembed?url='
-      for (var i = 0; i < arrayOfLinks.length; i++) {
-        // console.log(url + defaultLink + arrayOfLinks[i])
-        var answer = HTTP.call('GET', url + defaultLink + arrayOfLinks[i])
-        console.log("* got instagram embed code");
-        answer = JSON.parse(answer['content'])['html']
-        result.push(answer)
+      try {
+        for (var i = 0; i < arrayOfLinks.length; i++) {
+          // console.log(url + defaultLink + arrayOfLinks[i])
+          var answer = HTTP.call('GET', url + defaultLink + arrayOfLinks[i])
+          console.log("* got instagram embed code");
+          answer = JSON.parse(answer['content'])['html']
+          result.push(answer)
+        }
+        return result
+      } catch (ex) {
+        console.log(ex);
+        return result;
       }
-      return result
     } catch (e) {
       console.log(e);
       return null
