@@ -1,6 +1,5 @@
 Searches = new Mongo.Collection('searches')
-// Tweets = new Mongo.Collection('tweets')\
-// Posts = new Mongo.Collection('posts')
+
 var twitter = new TwitterApi()
 Meteor.methods({
   'getRelatedTags': function(text, accessToken) {
@@ -80,7 +79,7 @@ Meteor.methods({
       var connections = {}
       var results = []
       var id
-      var array = twitter.search(term)
+      var array = twitter.search(term);
       console.log("* searched for "+term);
       var content = JSON.parse(array['content'])
       content = content['statuses']
@@ -92,10 +91,7 @@ Meteor.methods({
         })
         console.log("* got tweet embed code...");
         rawEmbed = JSON.parse(rawEmbed['content'])
-          // Tweets.insert({
-          //   searched: term,
-          //   html: rawEmbed['html']
-          // })
+
 
         results.push(rawEmbed['html'])
       }

@@ -1,4 +1,5 @@
 // TODO: -add posibility to search by certain params.
+// TODO: add refresh on searched at beggingin of day.
 Searches = new Mongo.Collection('searches')
   // Tweets = new Mongo.Collection('tweets')
 Tweets = new Mongo.Collection(null)
@@ -24,6 +25,8 @@ callStuff = function(text) {
     document.getElementsByClassName("main")[0].style.webkitTransform = "translate(0, -25em)";
     document.getElementById("related-well").style.display = "";
     document.getElementById('content-results').style.display = "";
+    document.getElementById('content-results').style.marginTop = "0px";
+
     if (Posts.findOne({})) {
       Posts.remove({})
     }
@@ -66,7 +69,7 @@ callStuff = function(text) {
           });
         }
       } catch (e) {
-        
+
       }
     })
 
@@ -78,13 +81,11 @@ callStuff = function(text) {
               query: text,
               html: result[i]
             })
-            // arrayOfLinks.push(arrEmbeded[i]['html'])
         }
         document.getElementsByClassName("sk-folding-cube")[1].style.display = "none";
       } else {
         document.getElementById("posts-results").innerHTML = "Sorry, but no instagram posts found containing " + text
         document.getElementsByClassName("sk-folding-cube")[1].style.display = "none";
-
       }
     })
 
@@ -102,50 +103,15 @@ callStuff = function(text) {
         } else {
           document.getElementById("tweets-results").innerHTML = "Sorry, but no tweets found containing " + text;
           document.getElementsByClassName("sk-folding-cube")[0].style.display = "none";
-
         }
       }
     })
-
     event.target.text.value = ''
-
     return accessToken;
   } else {
     $("#modalTerm").modal('toggle');
   }
 }
-
-Template.search.events({
-  'click #live-search': function() {
-    console.log("ciorbaaaaaaa");
-    callStuff(this.text);
-  }
-})
-
-Template.related.events({
-  'click .label': function() {
-    callStuff(this.hashtag.substr(1))
-  }
-})
-
-Template.body.helpers({
-  searches: function() {
-    return Searches.find({}, {
-      sort: {
-        count: -1
-      }
-    })
-  },
-  tweets: function() {
-    return Tweets.find()
-  },
-  posts: function() {
-    return Posts.find()
-  },
-  relateds: function() {
-    return Relateds.find()
-  }
-})
 
 Template.body.events({
   'submit .searched': function(event) {
@@ -179,6 +145,38 @@ Template.body.events({
     })
   }
 })
+
+Template.search.events({
+  'click #live-search': function() {
+    callStuff(this.text);
+  }
+})
+
+Template.related.events({
+  'click .label': function() {
+    callStuff(this.hashtag.substr(1))
+  }
+})
+
+Template.body.helpers({
+  searches: function() {
+    return Searches.find({}, {
+      sort: {
+        count: -1
+      }
+    })
+  },
+  tweets: function() {
+    return Tweets.find()
+  },
+  posts: function() {
+    return Posts.find()
+  },
+  relateds: function() {
+    return Relateds.find()
+  }
+})
+
 
 Template.user_loggedout.events({
   "click #login": function(e, tmpl) {
