@@ -5,14 +5,14 @@ Meteor.methods({
   'getRelatedTags': function(text, accessToken) {
     check(text, String)
     check(accessToken, String)
-    console.log("Getting related hashtags for "+text);
+    console.log("Getting related hashtags for " + text);
     try {
       var result = HTTP.call('GET', 'https://api.instagram.com/v1/tags/search', {
-          params: {
-            q: text,
-            access_token: accessToken
-          }
-        })
+        params: {
+          q: text,
+          access_token: accessToken
+        }
+      })
       return JSON.parse(result.content)['data']
     } catch (e) {
       console.log(e);
@@ -26,10 +26,10 @@ Meteor.methods({
     try {
       console.log("Getting instagram posts:");
       var url = 'https://api.instagram.com/v1/tags/' + text +
-       '/media/recent?access_token=+' + accessToken
+        '/media/recent?access_token=+' + accessToken
 
       var result = HTTP.call('GET', url)
-      console.log("* searched for "+text);
+      console.log("* searched for " + text);
 
       // parsing the result so that we can call for the htmls
       var response = JSON.parse(result.content)['data']
@@ -37,18 +37,18 @@ Meteor.methods({
       // getting the ids of the posts
       var arrayOfLinks = []
 
-        // var arrayOfEmbed = []
+      // var arrayOfEmbed = []
       for (var i = 0; i < response.length; i++) {
         var toAdd = response[i]['link']
         var start = toAdd.length - 11
         toAdd = toAdd.slice(start)
         toAdd = toAdd.substring(0, toAdd.length - 1)
         arrayOfLinks.push(toAdd)
-        console.log("*added link: "+toAdd);
+        console.log("*added link: " + toAdd);
       }
 
       // getting the embeded posts
-        // TODO: Add if clause if post is picture or if post is video
+      // TODO: Add if clause if post is picture or if post is video
       var defaultLink = 'http://instagr.am/p/'
       var result = []
       var url = 'http://api.instagram.com/oembed?url='
@@ -80,7 +80,7 @@ Meteor.methods({
       var results = []
       var id
       var array = twitter.search(term);
-      console.log("* searched for "+term);
+      console.log("* searched for " + term);
       var content = JSON.parse(array['content'])
       content = content['statuses']
 
