@@ -3,9 +3,9 @@ ServiceConfiguration.configurations.remove({
 });
 ServiceConfiguration.configurations.insert({
   service: "instagram",
-  clientId: "5925b3e100144f5aae0a450b80858c2c",
-  scope: 'basic',
-  secret: "59d440d36200477f80a1660aadfe8608"
+  scope: 'public_content',
+  clientId: "881bb81f9c8049c2b7d1618df9f94ce0",
+  secret: "7091db015eed4af8a5b373d8b0089491"
 });
 ServiceConfiguration.configurations.remove({
   service: "twitter"
@@ -16,3 +16,7 @@ ServiceConfiguration.configurations.insert({
   secret: "3q3QME7rlcs9Pxk3kX1OUKBddmY21RcSdo9p4yed0cUW9ihcZP",
   loginStyle: "popup"
 })
+
+//https://api.instagram.com/oauth/authorize/?client_id=881bb81f9c8049c2b7d1618df9f94ce0&redirect_uri=http://localhost:8080/_oauth/instagram&response_type=token
+
+//42217566.881bb81.c536be49151d4ce7b4723f332e6559f2

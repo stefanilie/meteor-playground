@@ -13,6 +13,7 @@ callStuff = function(text) {
       if (Meteor.user().services.instagram) {
         userName = Meteor.user().services.instagram.username
         accessToken = Meteor.user().services.instagram.accessToken
+        console.log("\n\n\n\n\n\n\n\n\n"+accessToken+"\n\n\n\n\n\n");
       }
     } catch (e) {
       $("#myModal").modal('toggle');

@@ -5,7 +5,7 @@ Meteor.methods({
   'getRelatedTags': function(text, accessToken) {
     check(text, String)
     check(accessToken, String)
-    console.log("Getting related hashtags for " + text);
+    console.log("Getting related hashtags for " + text + " with token: "+accessToken);
     try {
       var result = HTTP.call('GET', 'https://api.instagram.com/v1/tags/search', {
         params: {
